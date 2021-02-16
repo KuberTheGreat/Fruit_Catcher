@@ -8,7 +8,7 @@ var playerCount = 0;
 
 var allPlayers;
 
-var score = 45;
+var score = 0;
 
 var player, form, game;
 
