@@ -42,7 +42,6 @@ class Game{
 
         // Adds the player sprites to the array
         players = [player1,player2];
-
     }
     
     // Function for the play of the game
@@ -80,10 +79,6 @@ class Game{
                 fill(145, 34, 34);
                 textSize(25);
                 text(allPlayers[plr].name, x - 25, y + 25); 
-
-                // Prints the score on the screen
-                fill(255, 255, 255);
-                text(allPlayers[plr].name + "'s score: " + score, 100, 100);
             }
         }
 
@@ -100,7 +95,7 @@ class Game{
         }
 
         // Create and spawn fruits randomly
-        if(frameCount % 80 === 0){
+        if(frameCount % 20 === 0){
             // Creates the fruit sprite and makes it fall
             fruits = createSprite(random(100, 1000), 0, 100, 100);
             fruits.velocityY = 6;
@@ -130,26 +125,35 @@ class Game{
             fruitGroup.add(fruits);
         }
 
-        // Condition to increase the score
-        if(fruitGroup.isTouching(player1)){
-            score += 1;
-            fruitGroup.destroyEach();
-        }
-        if(fruitGroup.isTouching(player2)){
-            score += 1;
-            fruitGroup.destroyEach();
+        // Condition to destroy the fruits
+        // And maybe increase the score
+        if(player.index !== null){
+            for(var i = 0; i < fruitGroup.length; i++){
+                if(fruitGroup.get(i).isTouching(players)){
+                    fruitGroup.get(i).destroy();
+                    player.score += 1;
+                    player.update();
+                }
+            }
         }
 
+        // Prints the score on the screen
+        fill(255, 255, 255);
+        text("player1's score: " + player.score, 100, 100);
+
         // Condition to end the game
-        if(score >= 50){
+        if(player.score >= 10){
             gameState = 2;
         }
     }
 
     // Function of the end state
     end(){
-       console.log("Game Ended");
+       game.update(2);
+       clear();
+       fill(123, 123, 213);
        textSize(15);
        text("Game Ended!!", 700, 700);
+       console.log("Game Ended!!! Now stop Playing");
     }
 }
